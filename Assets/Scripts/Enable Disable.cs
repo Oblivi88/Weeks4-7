@@ -7,6 +7,9 @@ public class EnableDisable : MonoBehaviour
     public GameObject go;
     public SpriteRenderer sr;
     public EnableDisable script;
+    public AudioSource ausource;
+    public AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,17 @@ public class EnableDisable : MonoBehaviour
             //sr.enabled = true;
             //script.enabled = true;
             go.SetActive(true);
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (ausource.isPlaying == false)
+            {
+                //ausource.Play();
+                ausource.PlayOneShot(clip);
+            }
+            //ausource.PlayOneShot(clip);
+
         }
     }
 }
