@@ -9,7 +9,8 @@ public class Movement : MonoBehaviour
     {
         
     }
-    Vector2 pos;
+    Vector2 pos = new Vector2(-7, -4);
+    
     // Update is called once per frame
     void Update()
     {
