@@ -17,7 +17,7 @@ public class Collide : MonoBehaviour
         pos = transform.position;
         if (playerPosition.x >= pos.x - 0.5 && playerPosition.x <= pos.x + 0.5 && playerPosition.y >= pos.y - 0.5 && playerPosition.y <= pos.y + 0.5)
         {
-            player
+
         }
     }
 }
