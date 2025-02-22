@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,15 +11,25 @@ public class ScoopSpawner : MonoBehaviour
     public GameObject chocolateScoop;
     public GameObject vanillaScoop;
     public GameObject strawberryScoop;
+    public GameObject chocolateDrip;
+    public GameObject vanillaDrip;
+    public GameObject strawberryDrip;
     // will be the spawned objects
     GameObject chocScoop;
     GameObject vanilScoop;
     GameObject strawScoop;
+    GameObject chocDrip;
+    GameObject vanilDrip;
+    GameObject strawDrip;
 
     // determines which button is pushed
     public int scoopNum = 0;
     // reference to the slider in the inspector
     public Slider slider;
+    // reference to the timer object in the inspector (will be used for getComponent)
+    public GameObject timer;
+    // determines which flavour the player had, to spawn the proper drip sprite
+    int dripFlavour;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +48,36 @@ public class ScoopSpawner : MonoBehaviour
         {
             chocScoop.transform.localScale = new Vector3(slider.value, slider.value, slider.value);
         }
-        if (vanillaScoop != null)
+        if (vanilScoop != null)
         {
             vanilScoop.transform.localScale = new Vector3(slider.value, slider.value, slider.value);
+        }
+
+        // if the timer has reached the max,
+        if (timer.GetComponent<Timer>().t >= timer.GetComponent<Timer>().slider.maxValue)
+        {
+            
+            // check which flavour is spawned, then set the int variable accordingly
+            if (chocScoop != null)
+            {
+                dripFlavour = 1;
+            } else if (vanilScoop != null)
+            {
+                dripFlavour = 2;
+            } else if (strawScoop != null)
+            {
+                dripFlavour = 3;
+            }
+            // immediately after that, destroy every sprite present, then quickly spawn a new drip sprite
+            destroyAll();
+            spawnDrip();
+        }
+        // if the timer is not at the max, do not show a drip
+        if (timer.GetComponent<Timer>().t < timer.GetComponent<Timer>().slider.maxValue)
+        {
+            Destroy(chocDrip);
+            Destroy(vanilDrip);
+            Destroy(strawDrip); 
         }
     }
 
@@ -68,12 +106,33 @@ public class ScoopSpawner : MonoBehaviour
             strawScoop = Instantiate(strawberryScoop);
         }
     }
-
+    // destroys all current sprites on screen and resets the slider value
     public void destroyAll()
     {
         Destroy(chocScoop);
         Destroy(vanilScoop);
         Destroy(strawScoop);
+        Destroy(chocDrip);
+        Destroy(vanilDrip);
+        Destroy(strawDrip);
         slider.value = slider.minValue;
+    }
+    // spawns the drip flavour when the timer reaches max
+    public void spawnDrip()
+    {
+        // this variable is set above
+        if (dripFlavour == 1)
+        {
+            chocDrip = Instantiate(chocolateDrip);
+        }
+        else if (dripFlavour == 2)
+        {
+            vanilDrip = Instantiate(vanillaDrip);
+        }
+        else if (dripFlavour == 3)
+        {
+            strawDrip = Instantiate(strawberryDrip);
+        }
+
     }
 }
